@@ -23,6 +23,7 @@ namespace a{
         y: number
     }
     let point: Point = { x: 100, y: 100 }
+
     //2、还可以用来描述行为的抽象
     interface Speakable {
         speak(): void
@@ -34,6 +35,59 @@ namespace a{
     class Person implements Speakable, Eatable {
         speak() { }
         eat() { }
+    }
+
+    //3、任意属性
+    interface PlainObject {
+        [propName: string]: number  //给任意属性的描述，下面的对象中只要类型对，添加多少项都可以
+    }
+    let obj: PlainObject = {
+        a: 1,
+        b: 2,
+        c: 3,
+    }
+
+    // 4、接口继承
+    interface SpeakableFather{
+        speakFather(): void
+    }
+    interface SpeakableSon extends SpeakableFather{
+        speakSon(): void
+    }
+    // SpeakableSon继承了SpeakableFather中定义的方法
+    class Human implements SpeakableSon{
+        speakFather() {  }
+        speakSon() {  }
+    }
+
+    //5、接口的只读-readonly
+    interface Circle{
+        readonly PI: number,
+        radius: number
+    }
+    let circle: Circle = {
+        PI: 3.14,
+        radius: 10,
+    }
+    // circle.PI = 3.15    //加了readonly之后无法更改
+
+    //6、接口还可以用来约束函数
+    interface DisCoount{
+        (price: number): number     //约束了函数的参数是number类型，返回值是number类型
+    }
+    let cost: DisCoount = function( price: number ): number {
+        return price * 0.8;
+    }
+
+    // 7、可索引接口---是用来对数组和对象进行约束的
+    interface UserInterface{
+        [index: number]: string
+    }
+    let arr: UserInterface = ['1', '2', '3']
+    let obj2: UserInterface = {
+        1: '1',
+        2: '2',
+        3: '3',
     }
 }
 
@@ -53,4 +107,29 @@ namespace b{
     }
     let cat = new Cat()
     cat.speak()
+}
+
+namespace c{
+    //类接口    可以用来装饰类
+    interface Speakable{
+        name: string,
+        speak(words: string): void
+    }
+    class Dog implements Speakable {
+        name: string;
+        speak() {  }
+    }
+    //约束构造函数类型  使用new约束
+    class Animal{
+        constructor( public name: string ){
+
+        }
+    }
+    interface withNameClass{
+        new(name: string): Animal
+    }
+    function createAnimal( clazz: withNameClass, name: string ){    //使用接口定义入参中的构造函数---new 的是构造函数
+        return new clazz(name);
+    }
+    createAnimal( Animal, 'zhufeng' )
 }
