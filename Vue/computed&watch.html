@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script>
+        // computed 和 watch的区别   有的时候可以实现相同的功能
+        //computed 计算 会根据其他的值来算
+        // watch 监控  监控某个值的变化  这两个方法都是基于vm.$watch
+
+        //watch 每次值变化后  都能执行对应的回调
+        //computed  计算属性  多次取值是有缓存效果的，如果依赖的值变化  会重新执行
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                name: 'zf'
+            },
+            // 当一个值变化了 可以做一件事情
+            watch:{
+                name: {
+                    handler(newValue){
+                        console.log(newValue);
+                    },
+                    immediate: true,     //立即执行handler
+                    deep: true,         //深度监控
+                    lazy: true,         //就是computed的实现
+                }
+            },
+            computed: {
+                // computed 内部具有缓存，如果依赖的属性没有变化，不会重新执行对应函数
+                fullname(){
+                    return this.name
+                }
+            }
+        })
+        // function initWatch(watch){
+        //     for(let key in watch){
+        //         vm.$watch(key, watch[key])
+        //     }
+        // }
+        // initWatch( 
+        //     {
+        //         name(newValue){
+        //             console.log(newValue);
+        //         }
+        //     }
+        //  )
+    </script>
+</body>
+</html>

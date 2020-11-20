@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">{{name}} {{age.age}}</div>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data(){
+                return {
+                    name: 'zf',
+                    age: {}
+                }
+            }
+        })
+        // 1)vue有个特点，不会在本轮代码执行的时候  去重新渲染dom
+        // 2）下一个事件环中执行（promise.then mutationobserver setTimmediste setTimeout)
+
+        //这里会等待数据更新后重新调用回调函数
+        //视图是异步更新的
+        vm.$watch('name', function(newValue, oldValue){
+            console.log(newValue);
+        })
+        // vm.name = 'jw';
+        // vm.name = 'lk';
+        //数据更新后会有一个队列，将watch的callback放到队列中，会将nextTick往后叠加
+        vm.$nextTick( () => {
+            console.log(vm.$el.innerHTML);
+        } ) 
+        vm.$set(vm.age, 'age', 100)
+    </script>
+</body>
+</html>

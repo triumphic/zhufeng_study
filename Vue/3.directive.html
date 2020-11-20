@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input{border: 1px solid red}
+        .content{width: 100px;height: 100px;background: burlywood;}
+    </style>
+</head>
+<body>
+    <!--指令有几部分组成-->
+    <div id="app">
+        <!-- 日历  弹层 -->
+        <div v-click-outside>
+            <input type="text" @focus='focus' @blur='blur'>
+            <div class="content" v-if='isVisible'>
+                content
+                <button>点我</button>
+            </div>
+        </div>
+    </div>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script>
+        // 可以实现  点击时判断是否存在当前的dom中
+        let vm = new Vue({
+            el: '#app',
+            directives: {   //可以生命多个  所以是复数形式
+                clickOutside: {
+                    bind(el, bindings, vnode){
+                        el.fn = (e) => {
+                            if( el.contains( e.target )) {
+                                vnode.context['focus']()
+                            }else{
+                                vnode.context['blur']()
+                            }
+                        }
+                        document.addEventListener('click', el.fn)
+                    },
+                    unbind(el){
+                        document.removeEventListener('click', el.fn)
+                    }
+                }
+            },
+            data() {
+                return {
+                    isVisible: false
+                }
+            },
+            methods: {
+                focus(){
+                    this.isVisible = true
+                },
+                blur(){
+                    this.isVisible = false
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
