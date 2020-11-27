@@ -17,4 +17,4 @@ function isType(type){
 // 高阶函数实现了第一个功能  保存变量（闭包）
 let isString = isType("String");
 // 什么叫闭包，在定义的时候，函数就已经决定了 一个函数不在自己的所在作用域下执行 
-console.log(isType('hello'));
+console.log(isString('hello'));

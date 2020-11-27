@@ -22,9 +22,9 @@ e.on(function(obj){        // 每次发布都会触发此函数
 })
 
 
-fs.readFile("./jiagouke/promise/name.txt", "utf8", function (error, data) {
+fs.readFile("./jiagouke/1.callback/name.txt", "utf8", function (error, data) {
     e.emit('age', data)
 })
-fs.readFile("./jiagouke/promise/age.txt", "utf8", function (error, data) {
+fs.readFile("./jiagouke/1.callback/age.txt", "utf8", function (error, data) {
     e.emit('name', data)
 })
